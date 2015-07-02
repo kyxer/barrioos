@@ -59,12 +59,18 @@ class User_model extends CI_Model
 		}
 	}
 
+	public function auth($user){
+
+		
+
+	}
+
 	private function _setUser($user){
 		return array (
 			'name'			=> $user['name'],
 			'email' 		=> $user['email'],
 			'password' 		=> $user['password'],
-			'postal_code' 	=> $user['postal_code']
+			'postal_code' 	=> $user['postalCode']
 		);
 	}
 }

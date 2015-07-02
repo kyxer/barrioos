@@ -56,5 +56,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['install/(:any)']['get'] = 'cli/install/$1';
 
 $route['users/(:num)']['get'] = 'user/find/$1';
-$route['user']['post'] = 'user/index';
+$route['user']['options'] = 'user/index';
 $route['user']['put'] = 'user/index';
+
+$route['auth/login']['post'] = 'auth/index';

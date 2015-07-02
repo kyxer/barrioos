@@ -31,20 +31,24 @@ class User extends REST_Controller {
 		}
 	}
 
-	public function index_post()
+	public function index_options()
 	{		
-		if(!$this->post('user')){
-			$this->response(NULL, 400);
+		$data = json_decode(file_get_contents("php://input"));
+		die(var_dump($_POST));
+		if(!$this->options('user')){
+
+			$this->response(array('token' => 'qwe'), 200);
 		}
 		
-		$userId = $this->user_model->save($this->post('user'));
+		$userId = $this->user_model->save($this->options('user'));
 
 		if (!is_null($userId)) {
 			$this->response(array('response' => $userId ), 200);
 		}
 		else 
-		{
-			$this->response(array('error' => 'Internal Server Error' , $userId ), 500);
+		{	
+			
+			$this->response(array('error' => 'Internal Server Error'), 500);
 		}
 	}
 

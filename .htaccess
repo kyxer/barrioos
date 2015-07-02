@@ -8,3 +8,8 @@
 <IfModule !mod_rewrite.c>
     ErrorDocument 404 /index.php 
 </IfModule>
+<ifModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin: "*"
+    Header always set Access-Control-Allow-Methods "POST, GET, PUT, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Accept, X-Requested-With, Cache-Control, content-type, Access-Control-Request-Method, Authorization"
+</ifModule>
