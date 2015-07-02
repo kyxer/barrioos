@@ -32,7 +32,7 @@ class User_model extends CI_Model
 			$this->_setUser($user)
 		)->insert('users');
 
-		if($this->db->affected_row() === 1){
+		if($this->db->affected_rows() === 1){
 
 			return $this->db->insert_id();
 		}
@@ -49,7 +49,7 @@ class User_model extends CI_Model
 		->where('id',$id)
 		->update('users');
 
-		if($this->db->affected_row() === 1){
+		if($this->db->affected_rows() === 1){
 
 			return TRUE;
 		}
@@ -61,17 +61,34 @@ class User_model extends CI_Model
 
 	public function auth($user){
 
-		
+		$query = $this->db->select('*')->from('users')->where('email', $user['email'])->get();
+		if ($query->num_rows() == 1) {
+			return $query->row_array();
+		}
+		return NULL;
 
 	}
 
 	private function _setUser($user){
-		return array (
-			'name'			=> $user['name'],
-			'email' 		=> $user['email'],
-			'password' 		=> $user['password'],
-			'postal_code' 	=> $user['postalCode']
-		);
+
+		$result = array();
+
+		if (isset($user['name']))
+			$result['name'] = $user['name'];
+
+		if (isset($user['email']))
+			$result['email'] = $user['email'];
+
+		if (isset($user['password']))
+			$result['password'] = $user['password'];
+
+		if (isset($user['postalCode']))
+			$result['postal_code'] = $user['postalCode'];
+
+		if (isset($user['token']))
+			$result['token'] = $user['token'];
+			
+		return $result;
 	}
 }
 

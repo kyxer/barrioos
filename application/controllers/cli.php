@@ -22,6 +22,11 @@ class CLI extends CI_Controller {
 				 'null' => false,
 				 'auto_increment' => true
 			),
+			'name' => array(
+				 'type' => 'VARCHAR',
+				 'constraint' => '255',
+				 'null' => false
+			),
 			'email' => array(
 				 'type' => 'VARCHAR',
 				 'constraint' => '255',
@@ -32,11 +37,16 @@ class CLI extends CI_Controller {
 				 'constraint' => '255',
 				 'null' => false
 			),
+			'token' => array(
+				 'type' => 'VARCHAR',
+				 'constraint' => '255',
+				 'null' => false
+			),
 			'postal_code' =>array(
 				'type' => 'INT' ,
 				'constraint' => 11,
 				'null' => false
-			),
+			),			
 			'address' => array(
 				'type' => 'TEXT',
 				'null' => true

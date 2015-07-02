@@ -10,6 +10,8 @@ class User extends REST_Controller {
 	{
 		parent::__construct();
 		$this->load->model('user_model');
+		$this->load->helper('jwt');
+		$this->load->helper('password');
 	}
 
 	public function find_get ($id) 
@@ -33,21 +35,44 @@ class User extends REST_Controller {
 
 	public function index_options()
 	{		
-		$data = json_decode(file_get_contents("php://input"));
-		die(var_dump($_POST));
-		if(!$this->options('user')){
 
-			$this->response(array('token' => 'qwe'), 200);
+		$this->response(array('response' => 'OK' ), 200);
+		
+	}
+
+	public function index_post()
+	{		
+
+		if(!$this->post('user')){
+
+			$this->response(array('error' => 'BAD REQUEST'), 400);
 		}
 		
-		$userId = $this->user_model->save($this->options('user'));
+		$user = $this->post('user');
+
+		$user['password'] = phpass_hash($user);
+
+		$userId = $this->user_model->save($user);
 
 		if (!is_null($userId)) {
-			$this->response(array('response' => $userId ), 200);
+
+			$user['id'] = $userId;
+			unset($user['password']);
+			$val['token']= jwd_create_token($user);
+
+			$result = $this->user_model->update($userId, $val);
+
+			if(!is_null($result))
+			{
+				$this->response(array('user' => $user, 'token' =>$val['token'] ), 200);
+			}
+			else 
+			{	
+				$this->response(array('error' => 'Internal Server Error'), 500);
+			}
 		}
 		else 
 		{	
-			
 			$this->response(array('error' => 'Internal Server Error'), 500);
 		}
 	}

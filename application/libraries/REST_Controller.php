@@ -283,6 +283,10 @@ abstract class REST_Controller extends CI_Controller {
             $this->{'_' . $this->request->method . '_args'} = $this->request->body;
         }
 
+        
+        if($this->_post_args && is_string($this->_post_args))
+            $this->_post_args = json_decode($this->_post_args, TRUE);
+
         // Merge both for one mega-args variable
         $this->_args = array_merge(
             $this->_get_args,

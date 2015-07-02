@@ -8,15 +8,31 @@ if ( ! function_exists('jwd_create_token'))
     {
         $CI =& get_instance();
      	$CI->load->library('JWT');
-     	$CI->load->library('date');
+     	$CI->load->helper('date');
 
      	$token = array(
-		    "exp" => strtotime('+30 day', $CI->date->now());,
-		    "iat" => $CI->date->now(),
+		    "exp" => strtotime('+30 day', now()),
+		    "iat" => now(),
 		    "sub" => $user['id']
 		);
 
-		return $CI->JWT::encode($token, JWT_TOKEN_SECRET);
-
+		return JWT::encode($token, JWT_TOKEN_SECRET);
     }   
+}
+
+if ( ! function_exists('is_authenticated'))
+{
+
+    function is_authenticated($user)
+    {
+        $CI =& get_instance();
+        $CI->load->library('JWT');
+
+        $CI->input->get_request_header('Authorization');
+
+        
+
+        return JWT::encode($token, JWT_TOKEN_SECRET);
+    }   
+
 }

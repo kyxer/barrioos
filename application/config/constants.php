@@ -93,3 +93,15 @@ define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 |
 */
 define('JWT_TOKEN_SECRET', '8kqizJtodZu5zAaftPR2FuMM.etSfxCBfylos6OwV');
+
+
+/*
+|--------------------------------------------------------------------------
+| PHPass config
+|--------------------------------------------------------------------------
+|
+*/
+// Base-2 logarithm of the iteration count used for password stretching
+define('HASH_COST_LOG2', 8);
+// Do we require the hashes to be portable to older systems (less secure)?
+define('HASH_PORTABLE', FALSE);

@@ -57,6 +57,9 @@ $route['install/(:any)']['get'] = 'cli/install/$1';
 
 $route['users/(:num)']['get'] = 'user/find/$1';
 $route['user']['options'] = 'user/index';
+$route['user']['post'] = 'user/index';
 $route['user']['put'] = 'user/index';
 
+
+$route['auth/login']['options'] = 'auth/index';
 $route['auth/login']['post'] = 'auth/index';
