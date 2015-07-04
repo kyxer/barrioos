@@ -87,7 +87,14 @@ class User_model extends CI_Model
 
 		if (isset($user['token']))
 			$result['token'] = $user['token'];
-			
+
+		if (isset($user['avatar_thumbnail']))
+			$result['avatar_thumbnail'] = $user['avatar_thumbnail'];
+
+		if (isset($user['avatar_standar']))
+			$result['avatar_standar'] = $user['avatar_standar'];
+
+	
 		return $result;
 	}
 }

@@ -12,6 +12,8 @@ class User extends REST_Controller {
 		$this->load->model('user_model');
 		$this->load->helper('jwt');
 		$this->load->helper('password');
+		$this->load->helper('file');
+		$this->load->helper('curl');
 	}
 
 	public function find_get ($id) 
@@ -64,7 +66,7 @@ class User extends REST_Controller {
 
 			if(!is_null($result))
 			{
-				$this->response(array('user' => $user, 'token' =>$val['token'] ), 200);
+				$this->response(array('user' => $user, 'token' => $val['token'] ), 200);
 			}
 			else 
 			{	
@@ -90,8 +92,54 @@ class User extends REST_Controller {
 		}
 		else 
 		{
-			$this->response(array('error' => 'Internal Server Error' , $userId ), 500);
+			$this->response(array('error' => 'Internal Server Error'), 500);
 		}
+	}
+
+	public function avatar_options($id){
+
+		$this->response(array('response' => 'OK' ), 200);
+
+	}
+
+	public function avatar_post($id) {
+
+		$tempImage = tempnam_sfx(sys_get_temp_dir(), "jpg");
+		$imageName = base64_to_png($this->post('image'), $tempImage);
+		$thumbImage = create_thumb($imageName);
+		$nameThumb = name_thumb($imageName);
+		
+		$handle = fopen($imageName, "r");
+ 		$data = fread($handle, filesize($imageName));
+		$headers = array('Authorization: Client-ID ' . IMGUR_CLIENT_ID);
+		$postFields = array('image' => base64_encode($data));	
+
+		$dataImage = send_post(IMGUR_URL_UPLOAD_IMAGE, $postFields, $headers);
+
+
+		$handle = fopen($nameThumb, "r");
+ 		$data = fread($handle, filesize($nameThumb));
+		$headers = array('Authorization: Client-ID ' . IMGUR_CLIENT_ID);
+		$postFields = array('image' => base64_encode($data));
+
+		$dataThumb = send_post(IMGUR_URL_UPLOAD_IMAGE, $postFields, $headers);
+
+		$val['avatar_thumbnail'] = $dataThumb['data']['link'];
+		$val['avatar_standar'] = $dataImage['data']['link'];
+
+
+		$userId = $this->user_model->update($id, $val);
+
+		if (!is_null($userId)) {
+			//unlink($imageName);
+			//unlink($nameThumb);
+			$this->response(array('avatars' => $val ), 200);
+		}
+		else 
+		{
+			$this->response(array('error' => 'Internal Server Error'), 500);
+		}
+		
 	}
 
 }

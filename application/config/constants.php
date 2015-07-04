@@ -105,3 +105,14 @@ define('JWT_TOKEN_SECRET', '8kqizJtodZu5zAaftPR2FuMM.etSfxCBfylos6OwV');
 define('HASH_COST_LOG2', 8);
 // Do we require the hashes to be portable to older systems (less secure)?
 define('HASH_PORTABLE', FALSE);
+
+
+/*
+|--------------------------------------------------------------------------
+| IMGUR API config
+|--------------------------------------------------------------------------
+|
+*/
+
+define('IMGUR_URL_UPLOAD_IMAGE', 'https://api.imgur.com/3/image.json');
+define('IMGUR_CLIENT_ID', '0db2dd5d329c5a5');
